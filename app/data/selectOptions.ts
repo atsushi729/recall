@@ -5,7 +5,7 @@ export const languageOptions: SelectOption[] = [
   { id: 2, name: "Japanese" },
 ];
 
-export const numberOfQuestionOptions: SelectOption[] = [
+export const questionCounts: SelectOption[] = [
   { id: 1, name: "3" },
   { id: 2, name: "5" },
   { id: 3, name: "7" },
