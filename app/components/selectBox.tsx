@@ -1,5 +1,3 @@
-// app/components/SelectBox.tsx
-
 import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
@@ -11,7 +9,7 @@ interface SelectBoxProps {
   onChange?: (option: SelectOption) => void;
 }
 
-const SelectBox: React.FC<SelectBoxProps> = ({ options, label, onChange }) => {
+const SelectBox = ({ options, label, onChange }: SelectBoxProps) => {
   const [selectedOption, setSelectedOption] = useState<SelectOption>(
     options[0]
   );
