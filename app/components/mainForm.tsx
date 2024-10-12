@@ -1,6 +1,12 @@
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "./button";
 import { useChatGPT } from "~/hooks/useChatGPT";
+import SelectBox from "./selectBox";
+import {
+  languageOptions,
+  questionCounts,
+  questionTypeOptions,
+} from "~/data/selectOptions";
 
 export default function MainForm() {
   const [question, setQuestion] = useState("");
@@ -30,6 +36,11 @@ export default function MainForm() {
           {isLoading ? "Generating..." : "Submit"}
         </Button>
       </form>
+      <div className="flex space-x-2 pt-5">
+        <SelectBox options={questionCounts} label="Number of Questions" />
+        <SelectBox options={languageOptions} label="Language" />
+        <SelectBox options={questionTypeOptions} label="Question Type" />
+      </div>
       {response && (
         <div className="mt-4 p-2 bg-gray-800 rounded">
           <h3 className="text-lg font-semibold">Response:</h3>
