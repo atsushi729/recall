@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import { SelectOption } from "~/types/selectBox";
@@ -6,19 +6,16 @@ import { SelectOption } from "~/types/selectBox";
 interface SelectBoxProps {
   options: SelectOption[];
   label?: string;
-  onChange?: (option: SelectOption) => void;
+  value: string | number | null;
+  onChange: (value: string | number | null) => void;
 }
 
-const SelectBox = ({ options, label, onChange }: SelectBoxProps) => {
-  const [selectedOption, setSelectedOption] = useState<SelectOption>(
-    options[0]
-  );
+const SelectBox = ({ options, label, value, onChange }: SelectBoxProps) => {
+  const selectedOption =
+    options.find((option) => option.id === value) || options[0];
 
   const handleChange = (option: SelectOption) => {
-    setSelectedOption(option);
-    if (onChange) {
-      onChange(option);
-    }
+    onChange(option.id);
   };
 
   return (

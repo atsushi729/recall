@@ -4,22 +4,53 @@ import { PROMPT } from "~/constants/prompt";
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const text = formData.get("text") as string;
-  const completionText = await getCompletion(text);
-  return completionText;
+
+  // extract data from form component
+  const question = formData.get("question") as string;
+  const numberOfQuestions = formData.get("numberOfQuestions");
+  const language = formData.get("language");
+  const questionType = formData.get("questionType");
+
+  // change data type
+  const numQuestions = numberOfQuestions ? Number(numberOfQuestions) : null;
+  const lang = language ? String(language) : null;
+  const qType = questionType ? String(questionType) : null;
+
+  // get question data
+  const questionText = await getQuestion({
+    question,
+    numberOfQuestions: numQuestions,
+    language: lang,
+    questionType: qType,
+  });
+
+  return questionText;
 }
 
-async function getCompletion(text: string) {
-  // Get the OpenAI API key from the environment variables
+interface CompletionParams {
+  question: string;
+  numberOfQuestions: number | null;
+  language: string | null;
+  questionType: string | null;
+}
+
+async function getQuestion(params: CompletionParams) {
+  const { question, numberOfQuestions, language, questionType } = params;
+
+  // Get OpenAI API key
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+  if (!OPENAI_API_KEY) {
+    throw new Error("OpenAI API key is not configured.");
+  }
+
   const openAI = new OpenAI({ apiKey: OPENAI_API_KEY });
 
-  // Generate question using the OpenAI API
+  // Request to OpenAI
   const result = await openAI.chat.completions.create({
     messages: [
       { role: "system", content: PROMPT.chat.system },
       { role: "assistant", content: PROMPT.chat.assistant },
-      { role: "user", content: text },
+      { role: "user", content: question },
     ],
     model: "gpt-4o-mini",
   });

@@ -1,3 +1,4 @@
+// MainForm.tsx
 import { FormEvent, useState } from "react";
 import { Button } from "./button";
 import { useChatGPT } from "~/hooks/useChatGPT";
@@ -10,11 +11,22 @@ import {
 
 export default function MainForm() {
   const [question, setQuestion] = useState("");
+  const [selectedQuestionCount, setSelectedQuestionCount] = useState("3");
+  const [selectedLanguage, setSelectedLanguage] = useState("English");
+  // prettier-ignore
+  const [selectedQuestionType, setSelectedQuestionType] = useState("Open-Close");
+
   const { response, error, isLoading, submitQuestion } = useChatGPT();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await submitQuestion(question);
+
+    await submitQuestion({
+      question,
+      numberOfQuestions: selectedQuestionCount,
+      language: selectedLanguage,
+      questionType: selectedQuestionType,
+    });
   };
 
   return (
@@ -37,9 +49,24 @@ export default function MainForm() {
         </Button>
       </form>
       <div className="flex space-x-2 pt-5">
-        <SelectBox options={questionCounts} label="Number of Questions" />
-        <SelectBox options={languageOptions} label="Language" />
-        <SelectBox options={questionTypeOptions} label="Question Type" />
+        <SelectBox
+          options={questionCounts}
+          label="Number of Questions"
+          value={selectedQuestionCount}
+          onChange={(value) => setSelectedQuestionCount(value as string)}
+        />
+        <SelectBox
+          options={languageOptions}
+          label="Language"
+          value={selectedLanguage}
+          onChange={(value) => setSelectedLanguage(value as string)}
+        />
+        <SelectBox
+          options={questionTypeOptions}
+          label="Question Type"
+          value={selectedQuestionType}
+          onChange={(value) => setSelectedQuestionType(value as string)}
+        />
       </div>
       {response && (
         <div className="mt-4 p-2 bg-gray-800 rounded">
