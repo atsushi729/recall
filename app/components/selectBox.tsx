@@ -6,16 +6,16 @@ import { SelectOption } from "~/types/selectBox";
 interface SelectBoxProps {
   options: SelectOption[];
   label?: string;
-  value: string | number | null;
-  onChange: (value: string | number | null) => void;
+  value: string | null;
+  onChange: (value: string | null) => void;
 }
 
 const SelectBox = ({ options, label, value, onChange }: SelectBoxProps) => {
   const selectedOption =
-    options.find((option) => option.id === value) || options[0];
+    options.find((option) => option.name === value) || null;
 
   const handleChange = (option: SelectOption) => {
-    onChange(option.id);
+    onChange(option.name);
   };
 
   return (
@@ -28,7 +28,9 @@ const SelectBox = ({ options, label, value, onChange }: SelectBoxProps) => {
         )}
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default bg-gray-800 py-3 pl-3 pr-10 text-left text-gray-200 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <span className="block truncate">{selectedOption.name}</span>
+            <span className="block truncate">
+              {selectedOption ? selectedOption.name : `Select ${label}`}
+            </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
               <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"
