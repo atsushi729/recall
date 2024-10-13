@@ -12,7 +12,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const questionType = formData.get("questionType");
 
   // change data type
-  const numQuestions = numberOfQuestions ? Number(numberOfQuestions) : null;
+  const numQuestions = numberOfQuestions ? String(numberOfQuestions) : null;
   const lang = language ? String(language) : null;
   const qType = questionType ? String(questionType) : null;
 
@@ -29,7 +29,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 interface CompletionParams {
   question: string;
-  numberOfQuestions: number | null;
+  numberOfQuestions: string | null;
   language: string | null;
   questionType: string | null;
 }
@@ -48,9 +48,9 @@ async function getQuestion(params: CompletionParams) {
   // Request to OpenAI
   const result = await openAI.chat.completions.create({
     messages: [
-      { role: "system", content: PROMPT.chat.system },
+      { role: "system", content: PROMPT.chat.system(language, numberOfQuestions, questionType) },
       { role: "assistant", content: PROMPT.chat.assistant },
-      { role: "user", content: question },
+      { role: "user", content: PROMPT.chat.user(question) },
     ],
     model: "gpt-4o-mini",
   });

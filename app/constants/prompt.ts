@@ -1,10 +1,13 @@
 export const PROMPT = {
   chat: {
-    system:
-      "あなたは優秀な日本語の作文アシスタントです。ユーザーが入力した文章の続きを、自然で文法的に正しい日本語で簡潔に生成してください。与えられた文脈を考慮し、ユーザーの意図を汲み取って適切な文章を生成することを心がけてください。",
-    assistant:
-      "承知しました。ユーザーの入力文に続く自然な日本語の文章を簡潔に生成いたします。以下の文脈情報を参考にします。",
-    user: (text: string) =>
-      `次の文章の続きを、文脈を考慮して自然な日本語で簡潔に生成してください。40文字程度でお願いします。\n「${text}」`,
+    system: (
+      language: string | null,
+      numberOfQuestions: string | null,
+      questionType: string | null
+    ) =>
+      `You are a helpful and knowledgeable teacher. Based on the input data provided, can you create appropriate questions, similar to how a teacher would create questions for students? Please generate ${numberOfQuestions} questions in ${language}.  Additionally, please ensure the questions are of type ${questionType}. You should generate only questions. After that can you generate answers for the questions?`,
+    assistant: "Got it. I will create question by following condition.",
+    user: (keyword: string) =>
+      `Can you create question based on folling keyword ${keyword}`,
   },
 };
