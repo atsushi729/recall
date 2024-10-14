@@ -1,19 +1,13 @@
-// MainForm.tsx
 import { FormEvent, useState } from "react";
 import { Button } from "./button";
 import { useChatGPT } from "~/hooks/useChatGPT";
 import SelectBox from "./selectBox";
-import {
-  languageOptions,
-  questionCounts,
-  questionTypeOptions,
-} from "~/data/selectOptions";
+import { languageOptions, questionCounts, questionTypeOptions } from "~/data/selectOptions";
 
 export default function MainForm() {
   const [question, setQuestion] = useState("");
   const [selectedQuestionCount, setSelectedQuestionCount] = useState("3");
   const [selectedLanguage, setSelectedLanguage] = useState("English");
-  // prettier-ignore
   const [selectedQuestionType, setSelectedQuestionType] = useState("Open-Close");
 
   const { response, error, isLoading, submitQuestion } = useChatGPT();
@@ -25,7 +19,7 @@ export default function MainForm() {
       question,
       numberOfQuestions: selectedQuestionCount,
       language: selectedLanguage,
-      questionType: selectedQuestionType,
+      questionType: selectedQuestionType
     });
   };
 
@@ -39,12 +33,7 @@ export default function MainForm() {
           placeholder="Enter keywords to create questions..."
           className="flex-grow bg-transparent border-b border-gray-700 focus:border-gray-600 focus:outline-none p-2 text-sm"
         />
-        <Button
-          type="submit"
-          variant="default"
-          className="shrink-0"
-          disabled={isLoading}
-        >
+        <Button type="submit" variant="default" className="shrink-0" disabled={isLoading}>
           {isLoading ? "Generating..." : "Submit"}
         </Button>
       </form>

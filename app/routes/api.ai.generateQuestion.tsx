@@ -21,7 +21,7 @@ export async function action({ request }: ActionFunctionArgs) {
     question,
     numberOfQuestions: numQuestions,
     language: lang,
-    questionType: qType,
+    questionType: qType
   });
 
   return questionText;
@@ -50,9 +50,9 @@ async function getQuestion(params: CompletionParams) {
     messages: [
       { role: "system", content: PROMPT.chat.system(language, numberOfQuestions, questionType) },
       { role: "assistant", content: PROMPT.chat.assistant },
-      { role: "user", content: PROMPT.chat.user(question) },
+      { role: "user", content: PROMPT.chat.user(question) }
     ],
-    model: "gpt-4o-mini",
+    model: "gpt-4o-mini"
   });
 
   const completion = result.choices[0].message.content;
