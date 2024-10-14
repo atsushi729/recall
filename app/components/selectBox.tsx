@@ -6,13 +6,12 @@ import { SelectOption } from "~/types/selectBox";
 interface SelectBoxProps {
   options: SelectOption[];
   label?: string;
-  value: string | null;
-  onChange: (value: string | null) => void;
+  value: string;
+  onChange: (value: string) => void;
 }
 
 const SelectBox = ({ options, label, value, onChange }: SelectBoxProps) => {
-  const selectedOption =
-    options.find((option) => option.name === value) || null;
+  const selectedOption = options.find((option) => option.name === value);
 
   const handleChange = (option: SelectOption) => {
     onChange(option.name);
@@ -32,10 +31,7 @@ const SelectBox = ({ options, label, value, onChange }: SelectBoxProps) => {
               {selectedOption ? selectedOption.name : `Select ${label}`}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-              <ChevronUpDownIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
+              <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
             </span>
           </Listbox.Button>
           <Transition
@@ -58,9 +54,7 @@ const SelectBox = ({ options, label, value, onChange }: SelectBoxProps) => {
                   {({ selected }) => (
                     <>
                       <span
-                        className={`block truncate ${
-                          selected ? "font-semibold" : "font-normal"
-                        }`}
+                        className={`block truncate ${selected ? "font-semibold" : "font-normal"}`}
                       >
                         {option.name}
                       </span>
