@@ -73,6 +73,11 @@ export default function MainForm() {
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generated Questions">
         <p className="text-white whitespace-pre-wrap">{response}</p>
       </Modal>
+      {response && (
+        <Button variant="default" onClick={() => setIsModalOpen(true)} className="mt-5">
+          View Questions
+        </Button>
+      )}
     </div>
   );
 }
