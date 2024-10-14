@@ -1,8 +1,9 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { Button } from "./button";
 import { useChatGPT } from "~/hooks/useChatGPT";
 import SelectBox from "./selectBox";
 import { languageOptions, questionCounts, questionTypeOptions } from "~/data/selectOptions";
+import Modal from "./modal";
 
 export default function MainForm() {
   const [question, setQuestion] = useState("");
@@ -11,6 +12,16 @@ export default function MainForm() {
   const [selectedQuestionType, setSelectedQuestionType] = useState("Open-Close");
 
   const { response, error, isLoading, submitQuestion } = useChatGPT();
+
+  // state to control the modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // open modal when response is available
+  useEffect(() => {
+    if (response) {
+      setIsModalOpen(true);
+    }
+  }, [response]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -42,28 +53,26 @@ export default function MainForm() {
           options={questionCounts}
           label="Number of Questions"
           value={selectedQuestionCount}
-          onChange={(value) => setSelectedQuestionCount(value as string)}
+          onChange={(value) => setSelectedQuestionCount(value)}
         />
         <SelectBox
           options={languageOptions}
           label="Language"
           value={selectedLanguage}
-          onChange={(value) => setSelectedLanguage(value as string)}
+          onChange={(value) => setSelectedLanguage(value)}
         />
         <SelectBox
           options={questionTypeOptions}
           label="Question Type"
           value={selectedQuestionType}
-          onChange={(value) => setSelectedQuestionType(value as string)}
+          onChange={(value) => setSelectedQuestionType(value)}
         />
       </div>
-      {response && (
-        <div className="mt-4 p-2 bg-gray-800 rounded">
-          <h3 className="text-lg font-semibold">Response:</h3>
-          <p>{response}</p>
-        </div>
-      )}
       {error && <p className="text-red-500 mt-2">{error}</p>}
+
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Generated Questions">
+        <p className="text-white whitespace-pre-wrap">{response}</p>
+      </Modal>
     </div>
   );
 }
